@@ -1,0 +1,214 @@
+sql exercise military service
+CREATE DATABASE SMILITAR
+USE SMILITAR 
+
+
+-- create tabla cuerpo
+create table cuerpo(
+codigo_cuerpo char(4),
+denominacion_cuerpo varchar(30),
+constraint pk_cc primary key(codigo_cuerpo),
+)
+
+
+--create tabla compañia
+create table compañia(
+numero_compañia char(3),
+actividad_compañia varchar(20),
+constraint pk_nc primary key(numero_compañia),
+)
+
+/*
+truncate table compañia
+Alter table compañia add constraint ch_numero_compañia check (numero_compañia<5)
+
+insert into compañia values(7,'blindada')
+
+*/
+
+--create tabla cuartel
+create table cuartel(
+id_cuartel char(3),
+nombre_cuartel varchar(30),
+ubicacion_cuartel varchar (30),
+constraint pk_ic primary key (id_cuartel)
+)
+
+
+--create tabla servicio
+create table servicio(
+codigo_servicio char(3),
+descripcion_servicio varchar(20),
+constraint pk_cs primary key(codigo_servicio),
+)
+
+
+--create table soldado
+create table soldado(
+id_soldado char(5),
+nombre_soldado varchar(30),
+apellido_soldado varchar (30),
+grado_soldado varchar(20),
+CONSTRAINT pk_is PRIMARY KEY (id_soldado),
+codigo_cuerpo1 char(4),
+numero_compañia1 char(3),
+codigo_servicio1 char(3),
+id_cuartel1 char(3),
+constraint fk_cc1 foreign key(codigo_cuerpo1)references cuerpo(codigo_cuerpo),
+constraint fk_nc1 foreign key (numero_compañia1)references compañia(numero_compañia),
+constraint fk_cs1 foreign key (codigo_servicio1)references servicio(codigo_servicio),
+constraint fk_ic1 foreign key (id_cuartel1)references cuartel(id_cuartel)
+)
+
+--create table secundarias
+
+create table cuartelcompañia(
+id_cuartel2 char(3),
+numero_compañia2 char(3),
+constraint fk_ic2 foreign key (id_cuartel2)references cuartel(id_cuartel),
+constraint fk_nc2 foreign key (numero_compañia2)references compañia(numero_compañia)
+)
+
+
+create table soldadoservicio(
+id_soldado2 char(5),
+codigo_servicio2 char(3),
+constraint fk_is2 foreign key (id_soldado2)references soldado(id_soldado),
+constraint fk_cs2 foreign key (codigo_servicio2)references servicio(codigo_servicio)
+)
+
+
+create table soldadocuerpo(
+id_soldado3 char(5),
+codigo_cuerpo2 char(4),
+constraint fk_is3 foreign key (id_soldado3)references soldado(id_soldado),
+constraint fk_cc2 foreign key (codigo_cuerpo2)references cuerpo(codigo_cuerpo)
+)
+
+create table soldadocompañia(
+id_soldado4 char(5),
+numero_compañia3 char(3),
+constraint fk_is4 foreign key (id_soldado4)references soldado(id_soldado),
+constraint fk_nc3 foreign key (numero_compañia3)references compañia(numero_compañia)
+)
+
+
+
+-- insert
+
+insert into cuerpo values('C1','fuerzas especiales')
+insert into cuerpo values('C2','policia militar')
+insert into cuerpo values('C3','guardia presidencial')
+insert into cuerpo values ('C4','primer cuerpo del ejercito')
+
+insert into compañia values(1,'infanteria')
+insert into compañia values(2,'caballeria')
+insert into compañia values(3,'artilleria')
+insert into compañia values(4,'blindada')
+
+insert into cuartel values ('R01','metropolitana','zapopan')
+insert into cuartel values ('R02','central','guadalajara')
+insert into cuartel values ('R03','centro','el salto')
+insert into cuartel values ('R04','norte','mezquitic')
+insert into cuartel values ('R05','costa','vallarta')
+insert into cuartel values ('R06','sur','tuxpan')
+
+insert into servicio values ('A01','guardia')
+insert into servicio values ('A02','cuartelero')
+insert into servicio values ('A03','administrativo')
+insert into servicio values ('A04','sanidad')
+
+insert into soldado values ('S101','carlos arturo','fernandez ortega','soldado','C2',1,'A01','R01')
+insert into soldado values ('S102','luis alberto','gonzalez lazo','cabo','C4',2,'A03','R06')
+insert into soldado values ('S103','jose manuel','gutierrez hernandez','soldado','C1',1,'A01','R05')
+insert into soldado values ('S104','victor','fonseca garibay','sargento segundo','C3',3,'A04','R02')
+insert into soldado values ('S105','marcos','arellano flores','cabo','C4',3,'A03','R03')
+insert into soldado values ('S106','daniel','zuñiga alvarez','soldado','C2',4,'A02','R04')
+
+
+
+insert into cuartelcompañia values ('R01',1)
+insert into cuartelcompañia values ('R02',3)
+insert into cuartelcompañia values ('R03',3)
+insert into cuartelcompañia values ('R04',4)
+insert into cuartelcompañia values ('R05',1)
+insert into cuartelcompañia values ('R06',2)
+
+insert into soldadoservicio values ('S101','A01')
+insert into soldadoservicio values ('S102','A03')
+insert into soldadoservicio values ('S103','A01')
+insert into soldadoservicio values ('S104','A04')
+insert into soldadoservicio values ('S105','A03')
+insert into soldadoservicio values ('S106','A02')
+
+insert into soldadocuerpo values ('S101','C2')
+insert into soldadocuerpo values ('S102','C4')
+insert into soldadocuerpo values ('S103','C1')
+insert into soldadocuerpo values ('S104','C3')
+insert into soldadocuerpo values ('S105','C4')
+insert into soldadocuerpo values ('S106','C2')
+
+insert into soldadocompañia values ('S101',1)
+insert into soldadocompañia values ('S102',2)
+insert into soldadocompañia values ('S103',1)
+insert into soldadocompañia values ('S104',3)
+insert into soldadocompañia values ('S105',3)
+insert into soldadocompañia values ('S106',4)
+
+
+select * from cuerpo
+select * from compañia
+select * from cuartel
+select * from servicio
+select * from soldado
+
+SELECT* FROM cuartelcompañia
+SELECT* FROM soldadoservicio
+SELECT* FROM soldadocuerpo
+SELECT* FROM soldadocompañia
+
+select ubicacion_cuartel, id_cuartel from cuartel
+
+
+select nombre_soldado, apellido_soldado as soldado, denominacion_cuerpo as cuerpo
+from soldado inner join cuerpo on (soldado.codigo_cuerpo1 = cuerpo.codigo_cuerpo)
+
+SELECT * FROM cuartelcompañia
+WHERE numero_compañia2 >= '3'
+
+
+
+-- modificacion tabla cuerpo
+update cuerpo
+set denominacion_cuerpo = 'brigada 51'
+where codigo_cuerpo = 'C2'
+
+update cuerpo
+set denominacion_cuerpo = '15va. zona militar'
+where codigo_cuerpo = 'C3'
+
+
+select * from cuerpo
+
+delete from soldado where id_soldado = 'S106'
+
+
+-- elimar base de datos y datos
+use master
+drop database SMILITAR
+
+-- ELIMINAR TODOS LOS REGISTROS DE UNA TABLA
+DELETE FROM SERVICIO
+
+truncate table SOLDADO
+
+DROP TABLE SERVICIO
+
+
+-- chek
+truncate table compañia
+Alter table compañia add constraint ch_numero_compañia check (numero_compañia<5)
+
+insert into compañia values(7,'blindada')
+
+
